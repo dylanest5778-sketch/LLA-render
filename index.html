@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLA Render Prompt Batcher</title>
+<style>body{font-family:Microsoft YaHei,Arial,sans-serif;background:#f3f5f4;color:#18201d;margin:0;display:grid;place-items:center;min-height:100vh}.box{background:white;border:1px solid #d7dfdb;border-radius:14px;padding:24px;max-width:560px;box-shadow:0 2px 10px rgba(0,0,0,.03)}.muted{color:#66726c;font-size:13px;line-height:1.7}</style>
+</head>
+<body>
+<div class="box"><h2>LLA Render Prompt Batcher</h2><div class="muted" id="msg">正在载入正式版…</div></div>
+<script>
+(async()=>{
+  try{
+    const t=await fetch('./app.gz.b64?ts='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('payload');return r.text()});
+    const bin=Uint8Array.from(atob(t.trim()),c=>c.charCodeAt(0));
+    if(!('DecompressionStream' in window)) throw new Error('browser');
+    const ds=new DecompressionStream('gzip');
+    const html=await new Response(new Blob([bin]).stream().pipeThrough(ds)).text();
+    document.open();document.write(html);document.close();
+  }catch(e){
+    document.getElementById('msg').textContent='载入失败。请使用最新版 Chrome / Edge 后刷新；若仍失败，请联系 LLA。';
+  }
+})();
+</script>
+</body>
+</html>
