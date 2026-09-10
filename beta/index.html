@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>LLA Render Prompt Batcher Beta</title>
-<style>body{font-family:Microsoft YaHei,Arial,sans-serif;background:#f3f5f4;color:#18201d;margin:0;display:grid;place-items:center;min-height:100vh}.box{background:#fff;border:1px solid #d7dfdb;border-radius:14px;padding:24px;max-width:560px}.muted{color:#66726c;font-size:13px;line-height:1.7}</style></head>
-<body><div class="box"><h2>LLA Render Prompt Batcher｜Beta</h2><div class="muted" id="msg">正在载入测试版…</div></div>
-<script>(async()=>{try{const t=await fetch('../app.gz.b64?ts='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('payload');return r.text()});const bin=Uint8Array.from(atob(t.trim()),c=>c.charCodeAt(0));if(!('DecompressionStream' in window))throw new Error('browser');const ds=new DecompressionStream('gzip');let html=await new Response(new Blob([bin]).stream().pipeThrough(ds)).text();html=html.replace('LIVE｜稳定链接自动更新','BETA｜内部测试通道').replace('V0.9.2','BETA');document.open();document.write(html);document.close();}catch(e){document.getElementById('msg').textContent='测试版载入失败，请刷新或联系 LLA。';}})();</script></body></html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LLA Render Prompt Batcher Beta</title>
+<style>body{font-family:Microsoft YaHei,Arial,sans-serif;background:#f3f5f4;color:#18201d;margin:0;display:grid;place-items:center;min-height:100vh}.box{background:#fff;border:1px solid #d7dfdb;border-radius:14px;padding:24px;max-width:560px}.muted{color:#66726c;font-size:13px;line-height:1.7}</style>
+</head>
+<body><div class="box"><h2>LLA Render Prompt Batcher｜V1.0 Beta</h2><div class="muted" id="msg">正在载入测试版…</div></div>
+<script>
+(async()=>{
+  try{
+    const files=['./payload/part01.txt','./payload/part02.txt','./payload/part03.txt','./payload/part04.txt'];
+    const parts=await Promise.all(files.map(u=>fetch(u+'?ts='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('payload '+u);return r.text()})));
+    const t=parts.join('').trim();
+    const bin=Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+    if(!('DecompressionStream' in window))throw new Error('browser');
+    const ds=new DecompressionStream('gzip');
+    const html=await new Response(new Blob([bin]).stream().pipeThrough(ds)).text();
+    document.open();document.write(html);document.close();
+  }catch(e){
+    document.getElementById('msg').textContent='测试版载入失败，请 Ctrl+F5 刷新；若仍失败，请联系 LLA。';
+  }
+})();
+</script></body></html>
